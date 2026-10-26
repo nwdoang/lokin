@@ -5,9 +5,15 @@
 ### Architecture
 feature-based architecture (core & feature)
 - `core/` provides an infrastructure foundation, global utilities, and application setups that remain unchanged based on business logic.
-- `feature/` isolating all business logic, state, APIs, and UI components that are specific to a single domain or a particular application function.
+- `features/` isolating all business logic, state, APIs, and UI components that are specific to a single domain or a particular application function.
+
 
 ### Code Principle
+
+### File Naming Convention
+Use the format <name>.<scope>.<extension> (e.g., app.layout.tsx, button.component.tsx).
+Rule: Applies to all internal project files.
+Exception: Auto-generated files or third-party configuration files are exempt.
 
 #### Clean Code
 - Meaning full name
