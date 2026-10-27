@@ -7,13 +7,13 @@ import { NavLink } from "react-router-dom";
 export type AppSidebarContentProps = Readonly<{
   projects: readonly ProjectSummary[];
   hasSearchQuery: boolean;
-  onCreateProject: (name: string) => void;
+  onOpenCreateProjectDialog: () => void;
 }>;
 
 export function AppSidebarContent({
   projects,
   hasSearchQuery,
-  onCreateProject,
+  onOpenCreateProjectDialog,
 }: AppSidebarContentProps) {
   const { isMobile, setOpenMobile } = useSidebar();
 
@@ -54,7 +54,9 @@ export function AppSidebarContent({
 
       <SidebarGroup>
         <SidebarGroupLabel>My projects</SidebarGroupLabel>
-        <ProjectCreateAction onCreateProject={onCreateProject} />
+        <ProjectCreateAction
+          onOpenCreateProjectDialog={onOpenCreateProjectDialog}
+        />
         <SidebarMenu>
           {projects.map((project) => (
             <SidebarMenuItem key={project.id}>
