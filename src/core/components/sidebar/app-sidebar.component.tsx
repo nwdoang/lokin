@@ -24,7 +24,7 @@ type AppSidebarProps = Readonly<{
 
 export function AppSidebar({ searchQuery }: AppSidebarProps) {
   const navigate = useNavigate();
-  const { projects, createProject } = useProjects();
+  const { projects, openProjectCreateDialog } = useProjects();
   const normalizedSearchQuery = searchQuery.trim().toLocaleLowerCase();
 
   const filteredProjects = useMemo(
@@ -35,9 +35,12 @@ export function AppSidebar({ searchQuery }: AppSidebarProps) {
     [normalizedSearchQuery, projects],
   );
 
-  function handleCreateProject(name: string): void {
-    const project = createProject(name);
-    navigate(`/projects/${encodeURIComponent(project.id)}`);
+  function handleOpenCreateProjectDialog(): void {
+    openProjectCreateDialog({
+      onCreated: (project) => {
+        navigate(`/projects/${encodeURIComponent(project.id)}`);
+      },
+    });
   }
 
   return (
@@ -49,7 +52,7 @@ export function AppSidebar({ searchQuery }: AppSidebarProps) {
       <AppSidebarContent
         projects={filteredProjects}
         hasSearchQuery={normalizedSearchQuery.length > 0}
-        onCreateProject={handleCreateProject}
+        onOpenCreateProjectDialog={handleOpenCreateProjectDialog}
       />
       <AppSidebarFooter user={LOCAL_USER} />
       <SidebarRail />

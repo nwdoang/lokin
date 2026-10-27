@@ -49,4 +49,5 @@ Before modifying creating, deleting, or renmaing any file:
 5. Do not modify any file until the user explicitly approves
 
 Reading and analyzing files does not require confirmation.
-After receiving confirmation, implement only the approved changes
+After receiving confirmation, implement only the approved changes.
+exception for direct request / small changes like formatting, ui, etc

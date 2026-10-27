@@ -6,17 +6,29 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
 
-function isProjectSummary(value: unknown): value is ProjectSummary {
+function parseProjectSummary(value: unknown): ProjectSummary | null {
   if (!isRecord(value)) {
-    return false;
+    return null;
   }
 
-  return (
-    typeof value.id === "string" &&
-    typeof value.name === "string" &&
-    typeof value.createdAt === "string" &&
-    typeof value.updatedAt === "string"
-  );
+  if (
+    typeof value.id !== "string" ||
+    typeof value.name !== "string" ||
+    (typeof value.description !== "string" &&
+      typeof value.description !== "undefined") ||
+    typeof value.createdAt !== "string" ||
+    typeof value.updatedAt !== "string"
+  ) {
+    return null;
+  }
+
+  return {
+    id: value.id,
+    name: value.name,
+    description: value.description ?? "",
+    createdAt: value.createdAt,
+    updatedAt: value.updatedAt,
+  };
 }
 
 export function readProjects(
@@ -29,10 +41,12 @@ export function readProjects(
     }
 
     const parsedProjects: unknown = JSON.parse(storedProjects);
-    return Array.isArray(parsedProjects) &&
-      parsedProjects.every(isProjectSummary)
-      ? parsedProjects
-      : [];
+    if (!Array.isArray(parsedProjects)) {
+      return [];
+    }
+
+    const projects = parsedProjects.map(parseProjectSummary);
+    return projects.every((project) => project !== null) ? projects : [];
   } catch {
     return [];
   }
